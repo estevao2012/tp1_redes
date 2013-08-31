@@ -1,4 +1,4 @@
-all: compila executa
+all: compila
 
 compila:
 	gcc -c main.c
