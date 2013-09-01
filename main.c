@@ -8,12 +8,12 @@
 #include <sys/socket.h>
  
 #define MAXRCVLEN 500
-#define PORTNUM 80
+#define PORTNUM 2343
  
 int main(int argc, char *argv[])
 {
    char buffer[MAXRCVLEN + 1]; /* +1 so we can add null terminator */
-   char msg[] = "Atestecone1 e5e9938b0c";
+   char msg[] = "Atestecone3 e5e9938b0c";
    int len, mysocket;
    struct sockaddr_in dest; 
  
@@ -22,7 +22,8 @@ int main(int argc, char *argv[])
    memset(&dest, 0, sizeof(dest));                /* zero the struct */
    dest.sin_family = AF_INET; 
    // dest.sin_addr.s_addr = gethostbyname("george.dcc.ufmg.br");///; /* set destination IP number */ 
-   dest.sin_addr.s_addr = inet_addr("150.164.9.28");///; /* set destination IP number */ 
+   //dest.sin_addr.s_addr = inet_addr("150.164.9.28");///; /* set destination IP number */ 
+   dest.sin_addr.s_addr = inet_addr("127.0.0.1");
    dest.sin_port = htons(PORTNUM);                /* set destination port number */
 
    connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr));
