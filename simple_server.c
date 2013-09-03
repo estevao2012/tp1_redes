@@ -12,7 +12,7 @@
  
 int main(int argc, char *argv[])
 {
-    char msg[] = "Hello World !\n";
+    char msg[] = "Aitalocunha e5e9938b0c";
     char buffer[MAXRCVLEN + 1]; /* +1 so we can add null terminator */
     struct sockaddr_in dest; /* socket info about the machine connecting to us */
     struct sockaddr_in serv; /* socket info about our server */
