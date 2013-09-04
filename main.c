@@ -71,12 +71,15 @@ int main(int argc, char *argv[])
     //tratando mensagem recebida
     if ( buffer[0] == 'C')
     {
-	char ip_recv[16];
+	char ip_recv[8];
         short port_recv;        
         
-         
-        printf("Conexão via endereço IP:%i.%i.%i.%i\n", (unsigned char)buffer[1],(unsigned char)buffer[2],(unsigned char)buffer[3],(unsigned char)buffer[4]);
-	printf("Porta:%i\n", (unsigned char)buffer[5]*256+(unsigned char)buffer[6]);
+	sprintf(ip_recv,"%i.%i.%i.%i", (unsigned char)buffer[1],(unsigned char)buffer[2],(unsigned char)buffer[3],(unsigned char)buffer[4]);
+
+        printf("Conexão via endereço IP:%s\n",ip_recv);
+	port_recv = (unsigned char)buffer[5]*256+(unsigned char)buffer[6];
+
+        printf("Resposta: %s\n",conecta_ip_recv(ip_recv, port_recv, msg));
     }
     else if (buffer[0] == 'N')
     {
@@ -94,7 +97,7 @@ int main(int argc, char *argv[])
 	printf("\n");        
     }
     else if (buffer[0] == 'S')
-    {
+    {	
         printf("Saida: O cliente deve fechar a conexão e informar ao servidor a ultima conexao realizada");
         printf("A mensagem de resultado comeca com o caracter D seguido de endereco ip e porta em hexadecimal");
     }

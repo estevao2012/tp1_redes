@@ -1,3 +1,4 @@
+#define MAXRCVLEN 500
 
 int hostname_to_ip(char * hostname , char* ip)
 {
@@ -22,4 +23,56 @@ int hostname_to_ip(char * hostname , char* ip)
     }
      
     return 1;
+}
+
+char *conecta_ip_recv(char *ip,unsigned short portnum, char *msg)
+{
+    char buffer[MAXRCVLEN + 1]; /* +1 so we can add null terminator */
+    int numbytes, mysocket;
+    struct sockaddr_in dest;
+    if ((mysocket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+    {
+        perror("socket()");
+        exit(1);
+    }
+    else
+    {
+        printf("the socket is ok\n");
+    }
+
+    memset(&dest, 0, sizeof(dest));           
+    dest.sin_family = AF_INET;
+    dest.sin_addr.s_addr = inet_addr(ip);     
+    dest.sin_port = htons(portnum);           
+
+    if (connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr)) == -1)
+    {
+        printf("ERRO ip: %i",ip);
+        printf(" port: %i",portnum);
+        perror("connect()");
+        exit(1);
+    }
+    else
+    {
+        printf("The connect() is OK\n");
+    }
+    
+    if (send(mysocket, msg, strlen(msg), 0) == -1)//envia conexao 'A' ja com senha certa
+    {
+        perror("send");
+        exit(1);
+    }
+    else
+    { printf("msg sent\n"); }
+
+    if ((numbytes = recv(mysocket, buffer, MAXRCVLEN, 0)) == -1)//Recebe resposta
+    {
+        perror("recv()");
+        exit(1);
+    }
+    buffer[numbytes] = '\0';
+   
+    close(mysocket);
+    
+    return buffer;
 }
