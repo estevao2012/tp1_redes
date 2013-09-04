@@ -65,20 +65,25 @@ int main(int argc, char *argv[])
         perror("recv()");
         exit(1);
     }
-    
-    buffer[numbytes] = '\0';
 
+    buffer[numbytes] = '\0';
+    
+    //tratando mensagem recebida
     if ( buffer[0] == 'C')
     {
- 
-        printf("Conexão via endereço IP:%i.%i.%i.%i\n", (unsigned int)buffer[1],(unsigned int)buffer[2],(unsigned int)buffer[3],(unsigned int)buffer[4]);
+	char ip_recv[16];
+        short port_recv;        
+        
+         
+        printf("Conexão via endereço IP:%i.%i.%i.%i\n", (unsigned char)buffer[1],(unsigned char)buffer[2],(unsigned char)buffer[3],(unsigned char)buffer[4]);
+	printf("Porta:%i\n", (unsigned char)buffer[5]*256+(unsigned char)buffer[6]);
     }
     else if (buffer[0] == 'N')
     {
 	char hostname_recv[100];
-	int port_recv;
-
-        for (i=2; i<buffer[1]+2; i++)
+        int tamanho_string = (unsigned char)buffer[1];
+        short port_recv;
+        for (i=2; tamanho_string<i+2; i++)
 	{
 		hostname_recv[i-2] = buffer[i];
 	}
