@@ -81,13 +81,15 @@ int main(int argc, char *argv[])
     else if (buffer[0] == 'N')
     {
 	char hostname_recv[100];
-        int tamanho_string = (unsigned char)buffer[1];
-        short port_recv;
-        for (i=2; tamanho_string<i+2; i++)
+        int tamanho_string = buffer[1];
+        unsigned short port_recv;
+        printf("tamanho string, %i\n",tamanho_string);
+        for (i=2; tamanho_string > i-2; i++)
 	{
 		hostname_recv[i-2] = buffer[i];
 	}
-	port_recv = buffer[i]*256+buffer[i+1];
+        hostname_recv[i-2] = '\0';
+	port_recv = (unsigned char)buffer[i]*256+(unsigned char)buffer[i+1];
         printf("Conexão via nome do servidor:%s | Porta: %i", hostname_recv, port_recv);        
 	printf("\n");        
     }
