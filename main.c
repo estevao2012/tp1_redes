@@ -95,19 +95,16 @@ int main(int argc, char *argv[])
     }
     else if (buffer[0] == 'S')
     {
-        printf("Saida");
-    }
-    else if (buffer[0] == 'D')
-    {
-        printf("Resultado");
+        printf("Saida: O cliente deve fechar a conexão e informar ao servidor a ultima conexao realizada");
+        printf("A mensagem de resultado comeca com o caracter D seguido de endereco ip e porta em hexadecimal");
     }
     else if (buffer[0] == '0')
     {
-        printf("OK");
+        printf("mensagem resultado esta correta");
     }
     else if (buffer[0] == 'E')
     {
-        printf("ERRO");
+        printf("ERRO | ou saida incorreta");
     }
     printf("(%d bytes).\n", buffer[0],numbytes);
     
