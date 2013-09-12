@@ -21,16 +21,16 @@ int main(int argc, char *argv[])
     char *hostname = "george.dcc.ufmg.br";
     char ip[100]; 
     char ip_recv[100];  
-    int  i; 
+    int  i,j=0; 
     unsigned short port_recv;     
     //---------  Variaveis --------//
     
     hostname_to_ip(hostname , ip); 
     port_recv = PORTNUM;
     while(1){
-        printf("Conecta a %s:%i\n",ip,port_recv );
+        printf("%i - Conecta a %s:%i\n",j,ip,port_recv );
         strcpy(resposta,conecta_ip_recv(ip,port_recv,msg));
-        sleep(1);
+        // sleep(1);
         // printf("Valor recebido : %s\n", resposta);
         if ( resposta[0] == 'C'){    //tratando mensagem recebida 
                 
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
             // printf("Porta:%i\n",port_recv); 
             // printf("%s\n",msg );
             // break;
-            sleep(1);
+            // sleep(1);
 
         }else if (resposta[0] == 'N'){
 
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
             // printf("Nome do servidor: %s , %s | Porta: %i\n", hostname_recv,ip, port_recv);        
             printf("Retorno por Nome do servidor: %s \n", hostname_recv);        
             // printf("\n");  
-            sleep(1);      
+            // sleep(1);      
             // break; 
 
             
@@ -85,6 +85,7 @@ int main(int argc, char *argv[])
             break;
 
         } 
+        j++;
     }
     // printf("Resposta: %s\n",conecta_ip_recv(ip, port_recv, msg));
  
