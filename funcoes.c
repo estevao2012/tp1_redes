@@ -15,9 +15,7 @@ int hostname_to_ip(char * hostname , char* ip)
  
     addr_list = (struct in_addr **) he->h_addr_list;
      
-    for(i = 0; addr_list[i] != NULL; i++) 
-    {
-        //Return the first one;
+    for(i = 0; addr_list[i] != NULL; i++){
         strcpy(ip , inet_ntoa(*addr_list[i]) );
         return 0;
     }
@@ -27,9 +25,10 @@ int hostname_to_ip(char * hostname , char* ip)
 
 char *conecta_ip_recv(char *ip,unsigned short portnum, char *msg)
 {
-    char buffer[MAXRCVLEN + 1]; /* +1 so we can add null terminator */
+    char resposta[MAXRCVLEN + 1]; /* +1 so we can add null terminator */
     int numbytes, mysocket;
     struct sockaddr_in dest;
+
     if ((mysocket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
     {
         perror("socket()");
@@ -37,7 +36,7 @@ char *conecta_ip_recv(char *ip,unsigned short portnum, char *msg)
     }
     else
     {
-        printf("the socket is ok\n");
+        // printf("the socket is ok\n");
     }
 
     memset(&dest, 0, sizeof(dest));           
@@ -45,34 +44,30 @@ char *conecta_ip_recv(char *ip,unsigned short portnum, char *msg)
     dest.sin_addr.s_addr = inet_addr(ip);     
     dest.sin_port = htons(portnum);           
 
-    if (connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr)) == -1)
-    {
-        printf("ERRO ip: %i",ip);
-        printf(" port: %i",portnum);
+    if (connect(mysocket, (struct sockaddr *)&dest, sizeof(struct sockaddr)) == -1) {
+        printf("ERRO ip: %s",ip);
+        printf(" port: %i\n",portnum);
         perror("connect()");
         exit(1);
-    }
-    else
-    {
-        printf("The connect() is OK\n");
+    }else{
+        // printf("The connect() is OK\n");
     }
     
-    if (send(mysocket, msg, strlen(msg), 0) == -1)//envia conexao 'A' ja com senha certa
-    {
+    if (send(mysocket, msg, strlen(msg), 0) == -1){
         perror("send");
         exit(1);
+    }else{ 
+        // printf("msg sent\n"); 
     }
-    else
-    { printf("msg sent\n"); }
 
-    if ((numbytes = recv(mysocket, buffer, MAXRCVLEN, 0)) == -1)//Recebe resposta
-    {
+    if ((numbytes = recv(mysocket, resposta, MAXRCVLEN, 0)) == -1){
         perror("recv()");
         exit(1);
     }
-    buffer[numbytes] = '\0';
+
+    resposta[numbytes] = '\0';
    
     close(mysocket);
     
-    return buffer;
+    return resposta;
 }
