@@ -121,9 +121,9 @@ int main(int argc, char *argv[])
             
             // printf("%d %X\n",tmp_ip, htonl(tmp_ip));  
 
-            sprintf(final,"D\\x%X\\x%X",htonl(tmp_ip),htons(port_recv));
+            sprintf(final,"D%X%X",ntohl(inet_addr(ip)),htons(port_recv));
             
-            // printf("%s\n",final );
+            printf("%s\n",final );
             // break;
             if (send(mysocket, final, strlen(final), 0) == -1){
                 perror("send");
@@ -150,14 +150,14 @@ int main(int argc, char *argv[])
         }
         else if (resposta[0] == 'E'){
 
-            printf("ERRO : %s\n",resposta);       
+            // printf("ERRO : %s\n",resposta);       
             break;
 
         } 
         else{
-        printf("%i - Conecta a %s:%i\n",j,ip,port_recv );
-        strcpy(resposta,conecta_ip_recv(ip,port_recv,msg));
-        j++;
+            printf("%i - Conecta a %s:%i\n",j,ip,port_recv );
+            strcpy(resposta,conecta_ip_recv(ip,port_recv,msg));
+            j++;
         }
     }
    
