@@ -8,4 +8,5 @@ server:
 	gcc simple_server.o -o servidor
 	./servidor
 executa:
-	./executavel
+	./executavel 
+
