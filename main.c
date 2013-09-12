@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
     char *hostname = "george.dcc.ufmg.br";
     char ip[16]; 
     char ip_recv[16]; 
-    char num[3]; 
     int  i,j=0,h=0,tmp_ip; 
     unsigned short port_recv; 
 
@@ -102,11 +101,12 @@ int main(int argc, char *argv[])
             // memset(msg ,"",sizeof(msg));
             // int addr = inet_addr(ip);
             //Convert Ip to hexaDecimal
-            char final[] = "D"; 
-            int total_caracter=0;
-            int pos_hex=1;
+           
+            int total_caracter=0; 
+            char num[13];
+            char final[7];  
 
-            for(i=0;i<sizeof(ip);i++)
+            for(i=0;i<16;i++)
                 if(ip[i] != NULL)
                     total_caracter++;
 
@@ -114,28 +114,17 @@ int main(int argc, char *argv[])
                     if(ip[i] != '.' && ip[i] != NULL){ 
                         num[h] = ip[i];
                         h++;
-                    }else{
-                        h = 0;
-                        tmp_ip = atoi(num);
-                        num[2] = NULL;
-                        num[1] = NULL;
-                        num[0] = NULL;
-                        printf("\\x%X\n", htons(tmp_ip));
-                         // final[pos_hex] = htons(tmp_ip);
-                        pos_hex++;
-                    } 
+                    }
             }
-            tmp_ip = atoi(num); 
-             // final[pos_hex] = (char *)htons(tmp_ip);
-             pos_hex++;
-
-
-            // printf("%X\n", htons(port_recv));
-             final[pos_hex] = (char *)htons(port_recv);
-            // printf("%s\n", ip);
+            num[h] = '\0';
+            tmp_ip = atoi(num);  
             
-            printf("%s\n",final );
-            break;
+            // printf("%d %X\n",tmp_ip, htonl(tmp_ip));  
+
+            sprintf(final,"D\\x%X\\x%X",htonl(tmp_ip),htons(port_recv));
+            
+            // printf("%s\n",final );
+            // break;
             if (send(mysocket, final, strlen(final), 0) == -1){
                 perror("send");
                 exit(1);
