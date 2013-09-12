@@ -105,6 +105,7 @@ int main(int argc, char *argv[])
             char final[] = "D"; 
             int total_caracter=0;
             int pos_hex=1;
+
             for(i=0;i<sizeof(ip);i++)
                 if(ip[i] != NULL)
                     total_caracter++;
@@ -119,18 +120,18 @@ int main(int argc, char *argv[])
                         num[2] = NULL;
                         num[1] = NULL;
                         num[0] = NULL;
-                        printf("\\x%X\n", ntohs(tmp_ip));
-                         final[pos_hex] = (char *)ntohs(tmp_ip);
+                        printf("\\x%X\n", htons(tmp_ip));
+                         // final[pos_hex] = htons(tmp_ip);
                         pos_hex++;
                     } 
             }
             tmp_ip = atoi(num); 
-             final[pos_hex] = (char *)ntohs(tmp_ip);
+             // final[pos_hex] = (char *)htons(tmp_ip);
              pos_hex++;
 
 
             // printf("%X\n", htons(port_recv));
-             final[pos_hex] = (char *)ntohs(port_recv);
+             final[pos_hex] = (char *)htons(port_recv);
             // printf("%s\n", ip);
             
             printf("%s\n",final );
