@@ -120,16 +120,14 @@ int main(int argc, char *argv[])
             if (send(mysocket, final, strlen(final), 0) == -1){
                 perror("send");
                 exit(1);
-            }else{ 
-                printf("msg sent\n"); 
+            }else{  
             }
             if ((numbytes = recv(mysocket, resposta, MAXRCVLEN, 0)) == -1){
                 perror("recv()");
                 exit(1);
             }
 
-            resposta[numbytes] = '\0';
-            printf("%s\n", resposta );
+            resposta[numbytes] = '\0'; 
             // break;
 
         }
@@ -142,7 +140,7 @@ int main(int argc, char *argv[])
         }
         else if (resposta[0] == 'E'){
 
-            // printf("ERRO : %s\n",resposta);       
+            printf("ERRO : %s\n",resposta);       
             break;
 
         } 
