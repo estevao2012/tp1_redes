@@ -17,13 +17,15 @@ int main(int argc, char *argv[])
 {
     //---------  Variaveis --------//
     char resposta[MAXRCVLEN + 1]; 
+    char tmp_resposta[MAXRCVLEN + 1];
     char msg[] = "Atestecone2 8a114d6895";
     char *hostname = "george.dcc.ufmg.br";
     char ip[16]; 
     char ip_recv[16]; 
     int  i,j=0,h=0,tmp_ip; 
-    unsigned short port_recv; 
-
+    unsigned short port_recv;
+    int indice_porta;
+    in_addr_t addressIp;
     //---------  Variaveis --------// 
 
     int numbytes, mysocket;
@@ -71,9 +73,10 @@ int main(int argc, char *argv[])
    
     
     
-    while(1){ 
+    while(1){  
         if ( resposta[0] == 'C'){    //tratando mensagem recebida 
-                
+            strcpy(tmp_resposta,resposta);                
+
         	sprintf(ip_recv,"%i.%i.%i.%i", (unsigned char)resposta[1],(unsigned char)resposta[2],(unsigned char)resposta[3],(unsigned char)resposta[4]);
 
             printf("retorno via endereço IP\n");
@@ -81,6 +84,7 @@ int main(int argc, char *argv[])
             strcpy(ip,ip_recv); 
 
         }else if (resposta[0] == 'N'){
+            strcpy(tmp_resposta,resposta);
 
             char hostname_recv[100];
             int tamanho_string = resposta[1]; 
@@ -90,6 +94,8 @@ int main(int argc, char *argv[])
             
             hostname_recv[i-2] = '\0';
 
+            indice_porta = i;
+
             port_recv = (unsigned char)resposta[i]*256+(unsigned char)resposta[i+1];
             hostname_to_ip(hostname_recv , ip);
             printf("Retorno por Nome do servidor: %s \n", hostname_recv);    
@@ -98,33 +104,19 @@ int main(int argc, char *argv[])
 
             // printf("Saida: O cliente deve fechar a conexão e informar ao servidor a ultima conexao realizada");
             // printf("A mensagem de resultado comeca com o caracter D seguido de endereco ip e porta em hexadecimal\n");       
-            // memset(msg ,"",sizeof(msg));
-            // int addr = inet_addr(ip);
+            // memset(msg ,"",sizeof(msg)); 
             //Convert Ip to hexaDecimal
-           
-            int total_caracter=0; 
-            char num[13];
-            char final[7];  
-
-            for(i=0;i<16;i++)
-                if(ip[i] != NULL)
-                    total_caracter++;
-
-            for(i=0;i<total_caracter;i++){ 
-                    if(ip[i] != '.' && ip[i] != NULL){ 
-                        num[h] = ip[i];
-                        h++;
-                    }
+            char final[7];   
+            char tmp_hostnam[MAXRCVLEN];
+            if(tmp_resposta[0] == 'C'){
+                strcpy(final,tmp_resposta);
+                final[0] = 'D';
+            }else if(tmp_resposta[0] == 'N'){
+                sprintf(final,"D%02X%02X%02X",(unsigned char)inet_addr(ip),tmp_resposta[indice_porta],tmp_resposta[indice_porta+1]);
             }
-            num[h] = '\0';
-            tmp_ip = atoi(num);  
-            
-            // printf("%d %X\n",tmp_ip, htonl(tmp_ip));  
+            // printf("%s\n",final );
+           
 
-            sprintf(final,"D%X%X",ntohl(inet_addr(ip)),htons(port_recv));
-            
-            printf("%s\n",final );
-            // break;
             if (send(mysocket, final, strlen(final), 0) == -1){
                 perror("send");
                 exit(1);
@@ -142,7 +134,7 @@ int main(int argc, char *argv[])
 
         }
 
-        if (resposta[0] == '0'){
+        if (resposta[0] == 'O'){
 
             printf("mensagem resultado esta correta\n");       
             break;
